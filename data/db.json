@@ -13,18 +13,6 @@
       "id": 2
     },
     {
-      "title": "try",
-      "body": "Testing submit buttkn",
-      "author": "mario",
-      "id": 4
-    },
-    {
-      "title": "Pruena",
-      "body": "asdafvsefadfa",
-      "author": "mario",
-      "id": 5
-    },
-    {
       "title": "Las Casas",
       "body": "Blog para testear el history.push()",
       "author": "mario",
@@ -43,20 +31,6 @@
       "author": "mario",
       "urlImage": "https://concepto.de/wp-content/uploads/2015/03/paisaje-e1549600034372.jpg",
       "id": 11
-    },
-    {
-      "title": "t2",
-      "body": "t2",
-      "author": "mario",
-      "urlImage": "   ",
-      "id": 12
-    },
-    {
-      "title": "t1",
-      "body": "232",
-      "author": "mario",
-      "urlImage": "   ",
-      "id": 13
     }
   ]
 }

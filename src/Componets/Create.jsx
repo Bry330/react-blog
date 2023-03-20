@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast, Toaster } from "react-hot-toast";
 import { useHistory, useParams } from "react-router-dom";
 import useFetch from "./usefetch";
 
@@ -7,7 +8,7 @@ const Create = () => {
     const params = useParams();
     const blogId = params.id
     const { data: blog, error, isPending } = useFetch('http://localhost:8000/blogs/' + blogId, !Boolean(blogId));
-
+    const notify = () => toast.success(blogId ? "Toast creater" : "Edited Toast")
     const [title, setTitle] = useState("");
     const [body, setBody] = useState('');
     const [author, setAuthor] = useState('mario');
@@ -23,10 +24,10 @@ const Create = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(blog)
         }).then(() => {
+            history.push("/")
             console.log('new blog added');
         })
 
-        history.push("/")
     }
 
     useEffect(() => {
@@ -80,8 +81,10 @@ const Create = () => {
                     <option value="mario">mario</option>
                     <option value="yoshi">yoshi</option>
                 </select>
-
-                <button> {blogId ? "Edit" : "Create"} Blog </button>
+                <div>
+                    <button onClick={notify}> {blogId ? "Edit" : "Create"} Blog </button>
+                    <Toaster />
+                </div>
             </form>
         </div>
     );
