@@ -132,3 +132,9 @@
   width: 100%;
 
 }
+
+.search-form {
+  display: flex;
+  text-align: left;
+  position: "top-right"
+}

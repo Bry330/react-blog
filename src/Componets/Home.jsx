@@ -6,11 +6,7 @@ const Home = () => {
 
     const { data: blogs, pending, error } = useFetch("http://localhost:8000/blogs")
 
-    const handleDelete = (id) => {
-        const newBlogs = blogs.filter(blog => blog.id !== id);
-        setblogs(newBlogs);
-    }
-
+    
     return (
         <div className="home">
             {error && <div> {error} </div>}

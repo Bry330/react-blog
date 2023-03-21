@@ -7,6 +7,6 @@
 - [x] CRUD
 - [x] custom react hooks
 - [x] Upload to github
+- [x] Toasts notifications
+- [x] Loading states
 - [] Filter
-- [] Loading states
-- [] Toasts notifications

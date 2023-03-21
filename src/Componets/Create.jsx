@@ -8,24 +8,50 @@ const Create = () => {
     const params = useParams();
     const blogId = params.id
     const { data: blog, error, isPending } = useFetch('http://localhost:8000/blogs/' + blogId, !Boolean(blogId));
-    const notify = () => toast.success(blogId ? "Toast creater" : "Edited Toast")
+
     const [title, setTitle] = useState("");
     const [body, setBody] = useState('');
-    const [author, setAuthor] = useState('mario');
+    const [author, setAuthor] = useState('');
     const [urlImage, setUrlImage] = useState('')
     const history = useHistory();
+    const action = blogId ? "editado" : "creado";
+
+    const createOrUpdateBlog = async () => {
+        const blog = { title, body, author, urlImage };
+
+        try {
+            const res = await fetch(`http://localhost:8000/blogs/${blogId ? blogId : ""}`, {
+                method: blogId ? 'PUT' : 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(blog)
+            })
+
+            const data = await res.json()
+
+            // transform res to data
+            if (res.ok) {
+                // return data
+                return data
+            }
+
+            throw new Error(`Error al ${blogId ? "actualizar" : "crear"} el blog`)
+
+        } catch (error) {
+            toast.error(`Error al ${blogId ? "actualizar" : "crear"} el blog: ${error.message}`)
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const blog = { title, body, author, urlImage };
 
-        await fetch(`http://localhost:8000/blogs/${blogId ? blogId : ""}`, {
-            method: blogId ? 'PUT' : 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(blog)
-        }).then(() => {
-            history.push("/")
-            console.log('new blog added');
+        toast.promise(createOrUpdateBlog(), {
+            loading: 'Loading',
+            success: (data) => {
+                console.log(data)
+                history.push("/")
+                // show the title of the blog in the notification
+                return `El blog ${title} ha sido ${action}`
+            }, error: 'Error when fetching',
         })
 
     }
@@ -35,6 +61,7 @@ const Create = () => {
             setTitle(blog.title)
             if (blog) setUrlImage(blog.urlImage)
             setBody(blog.body)
+            setAuthor(blog.author)
 
         }
 
@@ -42,12 +69,15 @@ const Create = () => {
             setTitle("")
             setUrlImage("   ")
             setBody("")
+            setAuthor("")
         }
     }, [blog])
 
 
     return (
         <div className="create">
+
+
             {blogId ? <h2>Edit the Blog</h2> : <h2>Add a New Blog</h2>}
 
             <form onSubmit={handleSubmit}>
@@ -74,16 +104,13 @@ const Create = () => {
                 ></textarea>
 
                 <label>Blog author:</label>
-                <select
+                <input type="text"
+                    required
                     value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                >
-                    <option value="mario">mario</option>
-                    <option value="yoshi">yoshi</option>
-                </select>
+                    onChange={(e) => setAuthor(e.target.value)} />
+
                 <div>
-                    <button onClick={notify}> {blogId ? "Edit" : "Create"} Blog </button>
-                    <Toaster />
+                    <button > {blogId ? "Edit" : "Create"} Blog </button>
                 </div>
             </form>
         </div>
